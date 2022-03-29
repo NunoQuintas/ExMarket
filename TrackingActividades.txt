@@ -1,0 +1,130 @@
+ Nuno Quintas
+ Intenções iniciais
+ - É pretendido uma aplicação de inserção de dados em BD SQL
+ 
+ - Será dado um limite de tempo de duas horas para a criação deste exercicio, devido a constraints de disponibilidade com o atual trabalho e projectos. Isto inclui desenho, implementação e disponibiçlização no GIT
+ 
+ - Hora de inicio: 07:00 do dia 28/03/2022.
+ 
+ 
+ 
+Plano:
+
+ - Devido aos limites indicados, será utilizado o formulário de template do VS para React, com uso de EntityFramework
+
+ - Será definido o modelo de dados primeiro, seguindo da criação do projecto, implementação de modelo de dados no código, e criação do formulário sobre esse modelo.
+  Estimativas:
+  - Análise, criação de plano: 10 min
+  
+  - Criação DB e Modelo de dados: 15 min
+  
+  - Criação projecto e implementação do modelo de dados no código: 30 min
+  
+  - Criação de formulário: 45 min* (devido à não familiaridade com React, este item é indicao com o maior risco)
+  
+  - Criação de projecto de Unit Testing, e testes sobre a implementação de modelo de dados: 20 min, ou o restante caso o 3º item se atrase
+  
+  
+Desenho
+ - Visto o pedido ser o registo para uma campanha de marketing da MEO, iremos ssumir que estamos a tratar de clientes singulares.
+
+ - Como a MEO inclui vários serviços, deverá ser possivel indicar ue tipo de serviço o cliente etá interessado
+
+
+Modelo Cliente
+ - Nome, texto com limite de 200 chars
+ - Email, texto, com limite de 150 chars
+ - número telefone, texto, deverá ter um limite de caracteres de 20 chars, para permitir números estrangeiros com indicativos de país
+ - Telefone, booleano, indica interesse no serviço telefónico fixo
+ - Internet, booleano, indica interesse no serviço de internet
+ - Telemovel, booleano, indica interesse no serviço telefónico móvel
+  
+ Log Actividades:
+ 
+  - Plano terminado às:07:11
+  
+  - DB Criada: 07:13
+	Script:
+		USE [master]
+		GO
+
+		CREATE DATABASE [Exercicio_Marketing]
+		 CONTAINMENT = NONE
+		 ON  PRIMARY 
+		( NAME = N'Exercicio_Marketing', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\Exercicio_Marketing.mdf' , SIZE = 73728KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+		 LOG ON 
+		( NAME = N'Exercicio_Marketing_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\Exercicio_Marketing_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+		GO
+		
+		
+   - Tabela terminado às:07:23
+    - Foram definidos campos obrigatórios, e adicionados alguns campos de audit
+		CREATE TABLE [dbo].[RegistoLeads](
+			[Id] [uniqueidentifier] NOT NULL,
+			[CreatedOn] [datetime] NOT NULL,
+			[CreatedBy] [nvarchar](100) NOT NULL,
+			[ModifiedOn] [datetime] NOT NULL,
+			[ModifiedBy] [nvarchar](100) NOT NULL,
+			[Deleted] [bit] NOT NULL,
+			[Nome] [nvarchar](200) NOT NULL,
+			[Email] [nvarchar](150) NOT NULL,
+			[NumeroTelefone] [nvarchar](20) NULL,
+			[Telefone] [bit] NOT NULL,
+			[Internet] [bit] NOT NULL,
+			[Telemovel] [bit] NOT NULL,
+		 CONSTRAINT [PK_ApplicationConfig] PRIMARY KEY CLUSTERED 
+		(
+			[Id] ASC
+		)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+		) ON [PRIMARY]
+		GO
+
+
+   - Projecto Criado: 07:28
+      - Necessário instalação NodeJS, instalado versão LTS 16.14.2 com feramentas incluidas
+	  - Instalação ainda em curso às 07:55, do pacote "visualstudio019buildtools". Será considerado o tempo até às 07:30, e será retomado quando a instalação terminar.
+	  - Irá atrasar o prazo de entrega, pelo qual assumo responsabilidade, devido aos meus compromissos profissionais atuais, que terão de tomar precedência.
+	  
+
+
+   - Trabalho retomado às 22:17
+	- Gestor de dados criado e gestão de audit aplicada
+
+   - Implementação modelo dados terminado às 22:42
+   
+   
+   - Implementação de formulário.
+	 - Como não tenho experiência em React, vou reaproveitar o sample "WeatherForecast", tanto a parte Contoller de backend como o Front End, alterando os nomes e funções conforme as necessidades
+	 - Primeiro passo será compilar, ver omo funciona como "end-user", e o que liga onde no código. 
+	 - Depois irei renomear classes, urls e chamadas tanto em FrontEnd como BackEnd, para que seja refletido o Use Case proposto.
+	 - E no final, irei veificar o que é necessário para que tudo funcione junto com a camada de dados
+	 
+	 
+     - Primeiro passo iniciado às 22:49.
+	   - Verificado que existem 2 partes no FrontEnd. Um contador simples, que parece não ter ligação a nenhum código de backend, e uma listagem, que busca informação ao controlador do BackEnd. Não parece ter nenhuma forma de inserção de dados pelo sample.
+	   - Cada parte/página, parece associar a um Component react
+	   - A parte do Contador, parece ser um bom candidato para edição, que já contém um exemplo de despoletador de ação. Combinado com a forma de realizar chamadas ao Controller do Back End na segunda parte do sample, poderá se tudo o que é necessário para implementar a funcionalidade necessária.
+	   - Se possivel dentro do tempo, adicionar um ExceptionHandler do lado do React, desta forma poderão ser mais rapidamente adicionados sanity checks do lado do BackEnd, de forma a controlar a validade antes da inserção de dados.
+	   - Possivel redirect para uma página de "Obrigado por submeter os seus dados" em caso de sucesso?
+
+
+     - Análise concluida e inicio da alteração das peças às 22:59.
+	   - Como os componentes do sample são relativamente simples, serão criadas novas peças ao lado em vez de renomear as atuais, de forma a ter código funcional disponivel para referência e teste.
+	   - Foi também criado um projecto de UnitTesting e planeados alguns testes básicos a realizar ao BackEnd e DataModel
+	   - BackEnd Controller Terminado às 23:25
+	   
+	 
+	 - Dou como concluido o tempo do exercicio às 23:09
+	   - Passou algum tempo das 2 horas que tinha projectado, e infelizmente o factor de risco do desconhecimento do React veio-se a revelar ser verdadeiro  
+	 
+	 
+	 
+ - Últimas notas
+   - Infelizmente não sobrou tempo para concluir os Unit Tests.
+   - Foi efetuado algum trabalho na parte do FrontEnd para a área pedida, mas a não familiaridade com o React dificultou algumas tarefas, que à partida são simples de resolver, com um pouco mais de conhecimento
+   - Infelizmente teve de ser colocado este constraint de tempo, devido a outras obrigações profissionais com o atual empregador que é claro têm um nivel de prioridade maior.
+   - Talvez tenha podido poupar algum tempo com a simplificação do projecto, utilizando CodeFirst no EntityFramework, em vez de realizar as configurações da forma que normalmente utilizo, mas mesmo assim penso que o tempo poupado não seria suficiente para absorver o conhecimento necessário do React para terminar o que faltou
+   - Achei o react interessante em termos de aceleração de desenvolvimento de ações no FrontEnd, para além da agilidade de user experience que dá quando comparado com um simples WebForm. 
+ 
+ 
+ 
