@@ -1,0 +1,35 @@
+﻿
+
+USE [master]
+		GO
+
+	CREATE DATABASE [Exercicio_Marketing]
+		CONTAINMENT = NONE
+		ON  PRIMARY 
+	( NAME = N'Exercicio_Marketing', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\Exercicio_Marketing.mdf' , SIZE = 73728KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+		LOG ON 
+	( NAME = N'Exercicio_Marketing_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\Exercicio_Marketing_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+	GO
+		
+		
+CREATE TABLE [dbo].[RegistoLeads](
+			[Id] [uniqueidentifier] NOT NULL,
+			[CreatedOn] [datetime] NOT NULL,
+			[CreatedBy] [nvarchar](100) NOT NULL,
+			[ModifiedOn] [datetime] NOT NULL,
+			[ModifiedBy] [nvarchar](100) NOT NULL,
+			[Deleted] [bit] NOT NULL,
+			[Nome] [nvarchar](200) NOT NULL,
+			[Email] [nvarchar](150) NOT NULL,
+			[NumeroTelefone] [nvarchar](20) NULL,
+			[Telefone] [bit] NOT NULL,
+			[Internet] [bit] NOT NULL,
+			[Telemovel] [bit] NOT NULL,
+		 CONSTRAINT [PK_ApplicationConfig] PRIMARY KEY CLUSTERED 
+		(
+			[Id] ASC
+		)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+		) ON [PRIMARY]
+		GO
+
+
